@@ -3,8 +3,8 @@ const { PORT = 4000, MONGODB_URL } = process.env;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-//const cors = require("cors");
-//const morgan = require("morgan");
+const cors = require("cors");
+const morgan = require("morgan");
 
  mongoose.connect(MONGODB_URL, {
      useUnifiedTopology: true,
@@ -65,10 +65,10 @@ const EventSchema = new mongoose.Schema({
     qualified: Boolean
 });
 
-// app.use(cors());
-// app.use(morgan("dev"));
-// app.use(express.json());
-// app.use(express.urlencoded({extend: true}));
+ app.use(cors());
+ app.use(morgan("dev"));
+ app.use(express.json());
+ app.use(express.urlencoded({extend: true}));
 
 app.get("/", (req, res) => {
     res.send("hello world");
