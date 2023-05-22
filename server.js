@@ -81,6 +81,7 @@ const EventSchema = new mongoose.Schema({
 const Event = mongoose.model("Event", EventSchema);
 
 const NewsSchema = new mongoose.Schema({
+    date: String,
     description: String
 });
 
@@ -116,7 +117,7 @@ app.post("/account", async (req, res) => {
     }
 });
 
-//Club Delete Route
+//Account Delete Route
 app.delete("/account/:id", async (req, res) =>{
     try {
         res.json(await Account.findByIdAndRemove(req.params.id))
@@ -125,7 +126,7 @@ app.delete("/account/:id", async (req, res) =>{
     }
 })
 
-//account Update Route
+//Account Update Route
 app.put("/account/:id", async (req, res) => {
     try {
         res.join(await Account.findByIdAndUpdate(req.params.id, req.body, {new: true}));
