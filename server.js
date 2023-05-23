@@ -6,11 +6,12 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
+const bodyParser=require("body-parser")
 
 //Database Connection
  mongoose.connect(MONGODB_URL, {
      useUnifiedTopology: true,
-     useNewUrlParser: true,
+     useNewUrlParser: true
  });
 
  mongoose.connection
@@ -51,13 +52,13 @@ const CharacterSchema = new mongoose.Schema ({
 
 const Character = mongoose.model("Character", CharacterSchema);
 
-const SpellSchema = new mongoose.Schema ({
+const SpellsSchema = new mongoose.Schema ({
     name: String,
     description: String,
     farm: String
 })
 
-const Spell = mongoose.model("Spell", SpellSchema);
+const Spells = mongoose.model("Spells", SpellsSchema);
 
 const ClubSchema = new mongoose.Schema({
     name: String,
@@ -92,7 +93,7 @@ const News = mongoose.model("News", NewsSchema);
  app.use(morgan("dev"));
  app.use(express.json());
  app.use(express.urlencoded({extend: true}));
-
+ app.use(bodyParser.json());
 //Routes 
 app.get("/", (req, res) => {
     res.send("hello world");
@@ -210,18 +211,18 @@ app.put("/character/:id", async (req, res) => {
 })
 
 //Spell Index Route
-app.get("/spell", async (req, res) => {
+app.get("/spells", async (req, res) => {
     try {
-        res.join(await Spell.find({}));
+        res.join(await Spells.find({}));
     } catch (error) {
         res.status(400).json(error);
     }
 })
 
 //Spell Create Route
-app.post("/spell", async (req, res) => {
+app.post("/spells", async (req, res) => {
     try {
-        res.json(await Spell.create(req.body));
+        res.json(await Spells.create(req.body));
     } catch (error) {
         //send error
         res.status(400).json(error);
@@ -229,18 +230,18 @@ app.post("/spell", async (req, res) => {
 });
 
 //Spell Delete Route
-app.delete("/spell/:id", async (req, res) =>{
+app.delete("/spells/:id", async (req, res) =>{
     try {
-        res.json(await Spell.findByIdAndRemove(req.params.id))
+        res.json(await Spells.findByIdAndRemove(req.params.id))
     } catch(error) {
         res.status(400).json(error)
     }
 })
 
 //Spell Update Route
-app.put("/spell/:id", async (req, res) => {
+app.put("/spells/:id", async (req, res) => {
     try {
-        res.join(await Spell.findByIdAndUpdate(req.params.id, req.body, {new: true}));
+        res.join(await Spells.findByIdAndUpdate(req.params.id, req.body, {new: true}));
     } catch (error) {
         res.status(400).json(error);
     }
